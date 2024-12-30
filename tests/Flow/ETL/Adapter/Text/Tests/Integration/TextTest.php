@@ -6,10 +6,9 @@ namespace Flow\ETL\Adapter\Text\Tests\Integration;
 
 use function Flow\ETL\Adapter\Text\to_text;
 use function Flow\ETL\DSL\string_entry;
-use Flow\ETL\{Flow, Row, Rows};
-use PHPUnit\Framework\TestCase;
+use Flow\ETL\{Flow, Row, Rows, Tests\FlowTestCase};
 
-final class TextTest extends TestCase
+final class TextTest extends FlowTestCase
 {
     public function test_loading_text_files() : void
     {

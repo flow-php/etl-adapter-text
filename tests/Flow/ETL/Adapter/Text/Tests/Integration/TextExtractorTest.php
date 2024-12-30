@@ -7,11 +7,10 @@ namespace Flow\ETL\Adapter\Text\Tests\Integration;
 use function Flow\ETL\Adapter\Text\{from_text};
 use Flow\ETL\Adapter\Text\TextExtractor;
 use Flow\ETL\Extractor\Signal;
-use Flow\ETL\{Config, Flow, FlowContext, Row};
+use Flow\ETL\{Config, Flow, FlowContext, Row, Tests\FlowTestCase};
 use Flow\Filesystem\Path;
-use PHPUnit\Framework\TestCase;
 
-final class TextExtractorTest extends TestCase
+final class TextExtractorTest extends FlowTestCase
 {
     public function test_extracting_text_file() : void
     {
