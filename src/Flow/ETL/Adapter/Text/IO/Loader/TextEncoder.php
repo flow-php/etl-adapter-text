@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Flow\ETL\Adapter\Text;
+namespace Flow\ETL\Adapter\Text\IO\Loader;
 
-use Flow\ETL\Column\TextValues;
-use Flow\ETL\Exception\RuntimeException;
-use Flow\ETL\Rows;
+use Flow\ETL\Foundation\Exception\RuntimeException;
+use Flow\ETL\Values\Column\TextValues;
+use Flow\ETL\Values\Rows;
 use Flow\Types\Type\Logical\ListType;
 use Flow\Types\Type\Logical\MapType;
 use Flow\Types\Type\Logical\StructureType;
@@ -55,7 +55,7 @@ final class TextEncoder
         return (
             implode(
                 $this->newLineSeparator,
-                (new TextValues())->texts($type, $rows->column($definitions[0]->reference()->name())->physicals()),
+                (new TextValues())->texts($type, $rows->column($definitions[0]->name())->physicals()),
             ) . $this->newLineSeparator
         );
     }

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Flow\ETL\Adapter\Text;
+namespace Flow\ETL\Adapter\Text\IO\Loader;
 
-use Flow\ETL\Loader\File\FileSink;
-use Flow\ETL\Rows;
+use Flow\ETL\IO\Loader\File\FileWriter;
+use Flow\ETL\Values\Rows;
 use Flow\Filesystem\DestinationStream;
 
-final readonly class TextOpenSink implements FileSink
+final readonly class TextFileWriter implements FileWriter
 {
     public function __construct(
         private DestinationStream $stream,
@@ -16,7 +16,7 @@ final readonly class TextOpenSink implements FileSink
     ) {}
 
     /**
-     * The stream belongs to the FilesSink that opened it.
+     * The stream belongs to the FileCommit that opened it.
      */
     public function close(): void {}
 

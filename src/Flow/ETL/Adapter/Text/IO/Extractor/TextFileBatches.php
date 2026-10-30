@@ -2,42 +2,51 @@
 
 declare(strict_types=1);
 
-namespace Flow\ETL\Adapter\Text;
+namespace Flow\ETL\Adapter\Text\IO\Extractor;
 
-use Flow\ETL\Column\Backend;
-use Flow\ETL\Extractor\File\FileBatches;
-use Flow\ETL\Extractor\File\ReadWindow;
-use Flow\ETL\Extractor\File\SourceFile;
-use Flow\ETL\Rows;
-use Flow\ETL\Schema;
-use Flow\Filesystem\Filesystem;
+use Flow\ETL\Foundation\Describe\Description;
+use Flow\ETL\Foundation\Describe\Rebuild;
+use Flow\ETL\IO\Extractor\Criteria;
+use Flow\ETL\IO\Extractor\File\FileBatches;
+use Flow\ETL\IO\Extractor\File\FileRead;
+use Flow\ETL\IO\Extractor\File\ReadWindow;
+use Flow\ETL\IO\Extractor\File\SourceFile;
+use Flow\ETL\Values\Column\Backend;
+use Flow\ETL\Values\Rows;
+use Flow\ETL\Values\Schema;
 use Generator;
+use SensitiveParameter;
 
 use function count;
 use function rtrim;
 
 final readonly class TextFileBatches implements FileBatches
 {
-    public function __construct(
-        private Filesystem $filesystem,
-    ) {}
+    public static function fromDescription(#[SensitiveParameter] array $data, Rebuild $rebuild): static
+    {
+        return new self();
+    }
+
+    public function describe(): ?Description
+    {
+        return Description::compose(self::class, []);
+    }
 
     /**
      * The lines into the "text" column; any other column $body declares is padded as matchTo() pads it.
      *
-     * @param int<1, max> $batchSize
-     *
      * @return Generator<int, Rows, mixed, int>
      */
     public function batches(
+        FileRead $read,
+        Criteria $criteria,
         SourceFile $source,
         Schema $body,
-        int $batchSize,
         Backend $backend,
         ReadWindow $window,
     ): Generator {
         $text = new Schema($body->get('text'));
-        $stream = $this->filesystem->readFrom($source->path);
+        $stream = $read->files->filesystem->readFrom($source->path);
 
         try {
             $lines = [];
@@ -45,7 +54,7 @@ final readonly class TextFileBatches implements FileBatches
             foreach ($stream->readLines() as $line) {
                 $lines[] = rtrim($line);
 
-                if (count($lines) >= $batchSize) {
+                if (count($lines) >= $read->batchSize) {
                     yield $this->batch($text, $lines, $body, $backend);
 
                     $lines = [];
@@ -72,4 +81,6 @@ final readonly class TextFileBatches implements FileBatches
 
         return Rows::fromColumns($text, ['text' => $builder->finish()], count($lines))->matchTo($body, $backend);
     }
+
+    public function close(): void {}
 }

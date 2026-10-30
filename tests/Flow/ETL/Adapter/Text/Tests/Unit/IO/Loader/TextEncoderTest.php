@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Flow\ETL\Adapter\Text\Tests\Unit;
+namespace Flow\ETL\Adapter\Text\Tests\Unit\IO\Loader;
 
-use Flow\ETL\Adapter\Text\TextEncoder;
-use Flow\ETL\Exception\RuntimeException;
-use Flow\ETL\Schema\Definition;
+use Flow\ETL\Adapter\Text\IO\Loader\TextEncoder;
+use Flow\ETL\Foundation\Exception\RuntimeException;
 use Flow\ETL\Tests\FlowTestCase;
+use Flow\ETL\Values\Schema\Definition;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Flow\ETL\Adapter\Text\Tests\Integration;
+namespace Flow\ETL\Adapter\Text\Tests\Integration\IO\Extractor;
 
-use Flow\ETL\Adapter\Text\TextExtractor;
+use Flow\ETL\Adapter\Text\IO\Extractor\TextExtractor;
 use Flow\ETL\Tests\FlowTestCase;
 
 use function Flow\ETL\Adapter\Text\from_text;
@@ -17,7 +17,7 @@ final class TextExtractorBatchContractTest extends FlowTestCase
     public function test_text_extractor_honours_the_batch_contract(): void
     {
         self::assertExtractorHonoursBatchContract(
-            static fn(): TextExtractor => from_text(__DIR__ . '/../Fixtures/parity_lines.txt'),
+            static fn(): TextExtractor => from_text(__DIR__ . '/../../../Fixtures/parity_lines.txt'),
             array_to_rows([['text' => 'alpha'], ['text' => 'beta'], ['text' => 'gamma']], schema(str_schema('text'))),
         );
     }
